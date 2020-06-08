@@ -1,4 +1,4 @@
-# reports-allunited
+# allunited-reports
 
 ## Project setup
 ```

@@ -6,7 +6,7 @@
       dark
     >
       <div class="d-flex align-center">
-        Reports AllUnited
+        AllUnited Reports
       </div>
 
       <v-spacer></v-spacer>
