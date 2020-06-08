@@ -13,13 +13,47 @@ Reports voor AllUnited baanbezetting
                 <v-btn>3. Kies period</v-btn>
 
             </v-col>
+        </v-row>
 
+        <v-row class="text-center">
             <v-col class="mb-4">
-                <v-file-input label="AllUnited file"></v-file-input>
+                <v-file-input
+                        accept=".csv"
+                        v-model="chosenFile"
+                        label="AllUnited report file"
+                >
+                </v-file-input>
+                <v-btn right @click="importFile">Import</v-btn>
 
             </v-col>
-
         </v-row>
+
+        <v-row class="text">
+            <v-col class="mb-4">
+                <h3>Elements {{fileLines.length}}</h3>
+                <div>
+                    <span v-for="(field, indexF) in fileFields" :key="indexF">{{field}}, </span>
+                </div>
+                <div v-for="(line, indexL) in fileData" :key="indexL">
+                    <span v-for="(element, indexE) in line" :key="indexL + indexE" class="ms-3">{{element}}</span>
+                </div>
+            </v-col>
+        </v-row>
+
+        <v-row class="text">
+            <v-col class="mb-4">
+                <h3>Lines</h3>
+                <div v-for="(line, index) in fileLines" :key="index">{{line}}</div>
+            </v-col>
+        </v-row>
+
+        <v-row class="text">
+            <v-col class="mb-4">
+                <h3>Text</h3>
+                {{fileText}}
+            </v-col>
+        </v-row>
+
     </v-container>
 </template>
 <script>
@@ -27,8 +61,43 @@ Reports voor AllUnited baanbezetting
         name: "MainPage",
 
         data: () => ({
-            file: ""
-        })
+            chosenFile: null,
+            fileText: null,
+            fileLines: [],
+            fileData: [],
+            fileFields: []
+        }),
+
+        methods: {
+            importFile() {
+
+                if (!this.chosenFile) {
+                    this.data = "No File Chosen"
+                }
+                var reader = new FileReader();
+
+                // Use the javascript reader object to load the contents
+                // of the file in the v-model prop
+                reader.readAsText(this.chosenFile);
+                reader.onload = () => {
+                    this.fileText = reader.result;
+
+                    // Split By lines
+                    var lines = this.fileText.split('\n');
+                    for(var nr = 0; nr < lines.length; nr++) {
+                        this.fileLines.push(line);
+                        let line = lines[nr].trim().replace(',,', ',"",');  // replace empty values (,,), by ,"",
+                        let data = JSON.parse('[' + line + ']')
+                        if (nr === 0 ) {
+                            this.fileFields = data;
+                            continue;
+                        }
+                        this.fileData.push(data);
+                    }
+
+                }
+            }
+        }
 
     }
 </script>

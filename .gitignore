@@ -20,4 +20,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-/src/export_test_lambert.csv
+
+# data
+/data
