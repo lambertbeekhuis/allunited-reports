@@ -25,20 +25,13 @@ Reports voor AllUnited baanbezetting
                 </v-file-input>
                 <v-btn right @click="importFile">Import</v-btn>
 
-
-                <h3>Elements {{fileLines.length}}</h3>
+                <h3>Elements {{fileData.length}}</h3>
                 <div>
                     <span v-for="(field, indexF) in fileFields" :key="indexF">{{field}}, </span>
                 </div>
                 <div v-for="(line, indexL) in fileData" :key="indexL">
                     <span v-for="(element, indexE) in line" :key="indexL + indexE" class="ms-3">{{element}}</span>
                 </div>
-
-                <h3>Lines</h3>
-                <div v-for="(line, index) in fileLines" :key="index">{{line}}</div>
-
-                <h3>Text</h3>
-                {{fileText}}
             </v-col>
             <v-col class="mb-4">
                 2
@@ -62,11 +55,17 @@ Reports voor AllUnited baanbezetting
         },
         data: () => ({
             chosenFile: null,
-            fileText: null,
-            fileLines: [],
-            fileData: [],
-            fileFields: []
         }),
+
+        computed: {
+            fileFields () {
+                return this.$store.state.fileFields;
+            },
+
+            fileData () {
+                return this.$store.state.fileData;
+            },
+        },
 
         methods: {
             importFile() {
@@ -80,21 +79,7 @@ Reports voor AllUnited baanbezetting
                 // of the file in the v-model prop
                 reader.readAsText(this.chosenFile);
                 reader.onload = () => {
-                    this.fileText = reader.result;
-
-                    // Split By lines
-                    var lines = this.fileText.split('\n');
-                    for(var nr = 0; nr < lines.length; nr++) {
-                        this.fileLines.push(line);
-                        let line = lines[nr].trim().replace(',,', ',"",');  // replace empty values (,,), by ,"",
-                        let data = JSON.parse('[' + line + ']')
-                        if (nr === 0 ) {
-                            this.fileFields = data;
-                            continue;
-                        }
-                        this.fileData.push(data);
-                    }
-
+                    this.$store.commit('SET_INPUT_DATA', reader.result);
                 }
             }
         }
