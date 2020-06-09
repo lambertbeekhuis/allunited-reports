@@ -25,11 +25,7 @@ Reports voor AllUnited baanbezetting
                 </v-file-input>
                 <v-btn right @click="importFile">Import</v-btn>
 
-            </v-col>
-        </v-row>
 
-        <v-row class="text">
-            <v-col class="mb-4">
                 <h3>Elements {{fileLines.length}}</h3>
                 <div>
                     <span v-for="(field, indexF) in fileFields" :key="indexF">{{field}}, </span>
@@ -37,29 +33,33 @@ Reports voor AllUnited baanbezetting
                 <div v-for="(line, indexL) in fileData" :key="indexL">
                     <span v-for="(element, indexE) in line" :key="indexL + indexE" class="ms-3">{{element}}</span>
                 </div>
-            </v-col>
-        </v-row>
 
-        <v-row class="text">
-            <v-col class="mb-4">
                 <h3>Lines</h3>
                 <div v-for="(line, index) in fileLines" :key="index">{{line}}</div>
-            </v-col>
-        </v-row>
 
-        <v-row class="text">
-            <v-col class="mb-4">
                 <h3>Text</h3>
                 {{fileText}}
             </v-col>
+            <v-col class="mb-4">
+                2
+            </v-col>
+
+            <v-col class="mb-4">
+                <graph-baanbezetting></graph-baanbezetting>
+            </v-col>
+
         </v-row>
 
     </v-container>
 </template>
 <script>
+    import GraphBaanbezetting from "./GraphBaanbezetting";
+
     export default {
         name: "MainPage",
-
+        components: {
+            GraphBaanbezetting
+        },
         data: () => ({
             chosenFile: null,
             fileText: null,
