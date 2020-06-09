@@ -38,7 +38,7 @@ Reports voor AllUnited baanbezetting
             </v-col>
 
             <v-col class="mb-4">
-                <graph-baanbezetting></graph-baanbezetting>
+                <graph-baanbezetting v-if="fileData.length"></graph-baanbezetting>
             </v-col>
 
         </v-row>
