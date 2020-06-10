@@ -1,5 +1,7 @@
 <script>
     import { Line } from 'vue-chartjs'
+    import parseISO from 'date-fns/parseISO'
+    import format from 'date-fns/format'
 
     export default {
         extends: Line,
@@ -47,7 +49,7 @@
                 // https://gomakethings.com/the-es6-way-to-loop-through-objects-with-vanilla-javascript/
                 // add the accumulated results to the chartData-set
                 Object.keys(resPerDay).forEach(function (key) {
-                    chartData.labels.push(key);
+                    chartData.labels.push(format(parseISO(key), 'eeeeee d MMM yyyy'));
                     chartData.datasets[0].data.push(resPerDay[key].length);
                 });
                 return chartData;
