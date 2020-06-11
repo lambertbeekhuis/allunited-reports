@@ -33,7 +33,7 @@
                     labels: [],
                     datasets: [
                         {
-                            label: "#reserveringen per dag",
+                            label: "#banen gedurende de dag",
                             data: [],
                         }
                     ]
@@ -44,7 +44,18 @@
                 //let dateTimesArray = dateFns.daysWithTimeInterval(this.$store.getters.firstDate, this.$store.getters.lastDate, '08:00', '23:00', 15);
 
                 // make the labels
-                let labels = dateTimesArray.map(date => dateFns.dateFormat(date, 'eeeeee dd-MM-yyyy kk:mo'));
+                let labels = dateTimesArray.map(date => {
+                    if (dateFns.dateFormat(date, 'kk') === '08') {
+                        return dateFns.dateFormat(date, 'eeeeee dd MMM yyyy');
+                    }
+                    if (dateFns.dateFormat(date, 'mm') === '00') {
+                        return dateFns.dateFormat(date, 'kk:mm');
+                    } else {
+                        return dateFns.dateFormat(date, 'kk:mm');
+                    }
+                });
+
+                console.log('labels', labels);
 
                 chartData.labels = labels;
 
@@ -63,7 +74,7 @@
                     // let key = dateFns.dateFormat(entry.startDate, 'eeeeee dd-MM-yyyy kk:mo');
                     // skip if key does not exist
                     if (!Object.prototype.hasOwnProperty.call(acc, key)) {
-                        console.log('key/date not found', key, dateFns.dateFormat(entry.startDate, 'eeeeee dd-MM-yyyy kk:mo'));
+                        console.log('key/date not found', key, dateFns.dateFormat(entry.startDate, 'eeeeee dd-MM-yyyy kk:mm'));
                         return acc; // do nothing for now
                     }
 
