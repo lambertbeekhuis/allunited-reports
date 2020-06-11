@@ -28,7 +28,8 @@
                 // https://medium.com/poka-techblog/simplify-your-javascript-use-map-reduce-and-filter-bd02c593cc2d
                 // accumulate reservations per day
                 let resPerDay = this.$store.state.entries.reduce((acc, entry) => {
-                    if (!acc.hasOwnProperty(entry['Vanaf datum'])) {
+                    // acc.hasOwnProperty() replaced by below, see https://eslint.org/docs/rules/no-prototype-builtins
+                    if (!Object.prototype.hasOwnProperty.call(acc, entry['Vanaf datum'])) {
                         acc[entry['Vanaf datum']] = [];
                     }
                     acc[entry['Vanaf datum']].push(entry);
@@ -55,6 +56,7 @@
                 return chartData;
 
                 // keep this here for reference
+                /*
                 return {
                     labels: ['red', 'green', 'yellow'],
                     datasets: [
@@ -64,6 +66,7 @@
                         }
                     ]
                 }
+                */
             }
         },
 
