@@ -27,22 +27,22 @@ Reports voor AllUnited baanbezetting
 
                 <h3>Elements {{fileData.length}}</h3>
                 <div>
-                    <span v-for="(field, indexF) in fileFields" :key="indexF">{{field}}, </span>
+                    <span v-for="(field, indexF) in fileFields" :key="'F' + indexF">{{field}}, </span>
                 </div>
                 <div v-for="(line, indexL) in fileData" :key="indexL">
-                    <span v-for="(element, indexE) in line" :key="indexL + indexE" class="ms-3">{{element}}</span>
+                    <span v-for="(element, indexE) in line" :key="'E' + indexE" class="ms-3">{{element}}</span>
                 </div>
             </v-col>
             <v-col class="mb-4">
                 <div>firstDate: {{firstDate}}</div>
                 <div>lastDate: {{lastDate}}</div>
                 <div>-- datetimes -- </div>
-                <div v-for="(dateTime, index) in dateTimes" :key="index">{{dateTime}}</div>
+                <div v-for="(dateTime, index) in dateTimes" :key="'DT' + index">{{dateTime}}</div>
 
                 <div>-- times -- </div>
-                <div v-for="(time, index) in times" :key="index">{{time}}</div>
+                <div v-for="(time, index) in times" :key="'T' + index">{{time}}</div>
                 <div>-- days -- </div>
-                <div v-for="(day, index) in days" :key="index">{{day}}</div>
+                <div v-for="(day, index) in days" :key="'D' + index">{{day}}</div>
 
             </v-col>
 
