@@ -17,33 +17,25 @@ export default new Vuex.Store({
 
     // used at new file-input or a app initialization
     SET_INPUT_DATA (state, fileReader) {
-      let fileName = null;
-      let fileText = null;
-      // fileReader === false is exemption for app startup:
+
       if (fileReader === false) {
-        console.log('fileReader === false');
         let storage = localStorage.getItem('allunited-reports');
         if (storage) {
-          storage = JSON.parse(storage);
-          fileName = storage.name;
-          fileText = storage.result;
+          // read file-input from storage
+          fileReader = JSON.parse(storage);
         } else {
-          // no storage found, do nothing
-          return;
+          return; // no storage found, do nothing
         }
       } else {
-        // handle in normal input file
-        fileName = fileReader.name;
-        fileText = fileReader.result;
-        // store file for usage a refresh
-        localStorage.setItem('allunited-reports', JSON.stringify({name: fileName, result: fileText}));
+        // handle in normal input file, store file for usage a refresh
+        localStorage.setItem('allunited-reports', JSON.stringify({name: fileReader.name, result: fileReader.result}));
       }
 
-      // Decode fileText, split By lines
+      // Decode inputfile-data, split by lines first
       let fileData = [];
       let fields = []
       let entries = [];
-      let lines = fileText.split('\n');
+      let lines = fileReader.result.split('\n');
       for (let nr = 0; nr < lines.length; nr++) {
         let line = lines[nr].trim().replace(',,', ',"",');  // replace empty values (,,), by ,"",
         let data = JSON.parse('[' + line + ']')
@@ -55,9 +47,9 @@ export default new Vuex.Store({
         entries.push(new Entry(data, fields));
       }
       state.fileName = fileReader.name;
-      state.entries = entries;
       state.fileFields = fields;
       state.fileData = fileData;
+      state.entries = entries;
     }
   },
 
