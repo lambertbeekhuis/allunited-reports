@@ -47,20 +47,31 @@
                 chartData.labels = labels;
 
                 // make the initial dataObject to collect all information
-                let initialDataObject = labels.reduce((acc, label) => {
-                    acc[label] = [];
+                let initialDataObject = dateTimesArray.reduce((acc, date) => {
+                    acc[date.getTime()] = [];
                     return acc;
                 }, {});
 
 
-                // fill the dataObject
+                // fill the dataObject with the data from the entries
                 // https://medium.com/poka-techblog/simplify-your-javascript-use-map-reduce-and-filter-bd02c593cc2d
                 let dataObject = this.$store.state.entries.reduce((acc, entry) => {
-                    let key = dateFns.dateFormat(entry.startDate, 'eeeeee dd-MM-yyyy kk:mo');
+                    let key = entry.startDate.getTime();
+                    let endKey = entry.endDate.getTime();
+                    // let key = dateFns.dateFormat(entry.startDate, 'eeeeee dd-MM-yyyy kk:mo');
+                    // skip if key does not exist
                     if (!Object.prototype.hasOwnProperty.call(acc, key)) {
+                        console.log('key/date not found', key, dateFns.dateFormat(entry.startDate, 'eeeeee dd-MM-yyyy kk:mo'));
                         return acc; // do nothing for now
                     }
-                    acc[key].push(entry);
+
+                    // push the entry until the endTime is reached
+                    // @todo: endTime is after the window to show
+                    do {
+                        acc[key].push(entry);
+                        key = key + (15 * 60000);
+                    }
+                    while (key <= endKey);
                     return acc;
                 }, initialDataObject);
 

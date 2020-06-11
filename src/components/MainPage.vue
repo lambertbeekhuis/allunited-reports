@@ -16,7 +16,7 @@ Reports voor AllUnited baanbezetting
         </v-row>
 
         <v-row>
-            <v-col class="mb-4">
+            <v-col class="mb-4" cols="3">
                 <v-file-input
                         accept=".csv"
                         v-model="chosenFile"
@@ -33,7 +33,7 @@ Reports voor AllUnited baanbezetting
                     <span v-for="(element, indexE) in line" :key="'E' + indexE" class="ms-3">{{element}}</span>
                 </div>
             </v-col>
-            <v-col class="mb-4">
+            <v-col class="mb-4" cols="3">
                 <div>firstDate: {{firstDate}}</div>
                 <div>lastDate: {{lastDate}}</div>
                 <div>-- datetimes -- </div>
@@ -46,7 +46,7 @@ Reports voor AllUnited baanbezetting
 
             </v-col>
 
-            <v-col class="mb-4">
+            <v-col class="mb-4" cols="6">
                 <graph-baanbezetting v-if="fileData.length"></graph-baanbezetting>
             </v-col>
 
