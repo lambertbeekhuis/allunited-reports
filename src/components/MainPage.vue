@@ -15,7 +15,7 @@ Reports voor AllUnited baanbezetting
             </v-col>
         </v-row>
 
-        <v-row class="text-center">
+        <v-row>
             <v-col class="mb-4">
                 <v-file-input
                         accept=".csv"
@@ -34,7 +34,8 @@ Reports voor AllUnited baanbezetting
                 </div>
             </v-col>
             <v-col class="mb-4">
-                2
+                <div>firstDate: {{firstDate}}</div>
+                <div>lastDate: {{lastDate}}</div>
             </v-col>
 
             <v-col class="mb-4">
@@ -65,6 +66,24 @@ Reports voor AllUnited baanbezetting
             fileData () {
                 return this.$store.state.fileData;
             },
+
+            firstDate () {
+                return this.$store.state.entries.reduce((firstDate, entry) => {
+                    if (entry['Vanaf datum'] < firstDate) {
+                        return entry['Vanaf datum'];
+                    }
+                    return firstDate;
+                }, '2100-01-01');
+            },
+
+            lastDate () {
+                return this.$store.state.entries.reduce((lastDate, entry) => {
+                    if (entry['Vanaf datum'] > lastDate) {
+                        return entry['Vanaf datum'];
+                    }
+                    return lastDate;
+                }, '1900-01-01');
+            }
         },
 
         methods: {
