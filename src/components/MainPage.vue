@@ -36,6 +36,9 @@ Reports voor AllUnited baanbezetting
             <v-col class="mb-4">
                 <div>firstDate: {{firstDate}}</div>
                 <div>lastDate: {{lastDate}}</div>
+                <div>-- times -- </div>
+                <div v-for="(time, index) in times" :key="index">{{time}}</div>
+                <div>-- days -- </div>
                 <div v-for="(day, index) in days" :key="index">{{day}}</div>
 
             </v-col>
@@ -94,7 +97,16 @@ Reports voor AllUnited baanbezetting
                 } else {
                     return []
                 }
-            }
+            },
+
+            times () {
+                if (this.firstDate) {
+                    return dateFns.dateTimesFromStartTimeToEndTime(this.firstDate, '10:00', '11:00', 15);
+                } else {
+                    return []
+                }
+            },
+
         },
 
         methods: {

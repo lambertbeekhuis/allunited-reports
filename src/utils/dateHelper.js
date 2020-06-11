@@ -133,6 +133,20 @@ function datesFromStartToEnd (startDateOrYmd, endDateOrYmd) {
     return result;
 }
 
+// returns an array of dates from startTime until endTime for dateYmd, with intervalInMinutes
+function dateTimesFromStartTimeToEndTime (dateOrYmd, startTime, endTime, intervalInMinutes) {
+    let result = [];
+    let ymd = convertToYmd(dateOrYmd);
+    let dateTime = parseISO(ymd + 'T' + startTime + ':00');
+    let endDateTime = parseISO(ymd + 'T' + endTime + ':00');
+        do {
+        result.push(dateTime);
+        dateTime = addMinutes(dateTime, intervalInMinutes);
+    } while (dateTime <= endDateTime);
+    return result;
+}
+
+
 function isValidDateObject(object) {
     // https://stackoverflow.com/questions/643782/how-to-check-whether-an-object-is-a-date
     return object && Object.prototype.toString.call(object) === "[object Date]" && !isNaN(object);
@@ -203,6 +217,8 @@ const dateFns = {
     addMonths: addMonths,
 
     datesFromStartToEnd: datesFromStartToEnd,
+
+    dateTimesFromStartTimeToEndTime: dateTimesFromStartTimeToEndTime,
 
     getStartEndOfWeekYmd: getStartEndOfWeekYmd,
 
