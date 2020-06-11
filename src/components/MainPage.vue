@@ -36,6 +36,8 @@ Reports voor AllUnited baanbezetting
             <v-col class="mb-4">
                 <div>firstDate: {{firstDate}}</div>
                 <div>lastDate: {{lastDate}}</div>
+                <div v-for="(day, index) in days" :key="index">{{day}}</div>
+
             </v-col>
 
             <v-col class="mb-4">
@@ -48,6 +50,7 @@ Reports voor AllUnited baanbezetting
 </template>
 <script>
     import GraphBaanbezetting from "./GraphBaanbezetting";
+    import {dateFns} from "../utils/dateHelper";
 
     export default {
         name: "MainPage",
@@ -69,20 +72,28 @@ Reports voor AllUnited baanbezetting
 
             firstDate () {
                 return this.$store.state.entries.reduce((firstDate, entry) => {
-                    if (entry['Vanaf datum'] < firstDate) {
+                    if (entry['Vanaf datum'] < firstDate || firstDate === false) {
                         return entry['Vanaf datum'];
                     }
                     return firstDate;
-                }, '2100-01-01');
+                }, false);
             },
 
             lastDate () {
                 return this.$store.state.entries.reduce((lastDate, entry) => {
-                    if (entry['Vanaf datum'] > lastDate) {
+                    if (entry['Vanaf datum'] > lastDate || lastDate === false) {
                         return entry['Vanaf datum'];
                     }
                     return lastDate;
-                }, '1900-01-01');
+                }, false);
+            },
+
+            days () {
+                if (this.firstDate) {
+                    return dateFns.datesFromStartToEnd(this.firstDate, this.lastDate);
+                } else {
+                    return []
+                }
             }
         },
 
