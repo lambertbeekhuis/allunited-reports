@@ -13,6 +13,28 @@ export default new Vuex.Store({
     entries: []     // a dataset converted to an entry-object
   },
 
+  getters: {
+
+    firstDate: state => {
+      return state.entries.reduce((firstDate, entry) => {
+        if (entry['Vanaf datum'] < firstDate || firstDate === false) {
+          return entry['Vanaf datum'];
+        }
+        return firstDate;
+      }, false);
+    },
+
+    lastDate: state => {
+      return state.entries.reduce((lastDate, entry) => {
+        if (entry['Vanaf datum'] > lastDate || lastDate === false) {
+          return entry['Vanaf datum'];
+        }
+        return lastDate;
+      }, false);
+    },
+
+  },
+
   mutations: {
 
     // used at new file-input or a app initialization

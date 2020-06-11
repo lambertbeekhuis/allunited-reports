@@ -1,10 +1,17 @@
-
+import { parseISO, intervalToDuration} from "date-fns";
 export class Entry {
 
     constructor(data, fields) {
         fields.forEach((field, index) => {
             this[field] = data[index];
         });
+
+        this.startDate = parseISO(this['Vanaf datum'] + 'T' + this['Tijd vanaf']);
+        this.endDate = parseISO(this['Vanaf datum'] + 'T' + this['Tijd t/m']);
+
+        let intervalObject = intervalToDuration({start: this.startDate, end: this.endDate});
+        this.duration = intervalObject.hours * 60 + intervalObject.minutes;
+
 
         /*
         {
@@ -23,6 +30,8 @@ export class Entry {
     getCourt() {
         return this['Locatiecode'];
     }
+
+
 
     /*
     addEvent(event) {

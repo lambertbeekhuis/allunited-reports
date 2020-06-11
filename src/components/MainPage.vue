@@ -77,21 +77,11 @@ Reports voor AllUnited baanbezetting
             },
 
             firstDate () {
-                return this.$store.state.entries.reduce((firstDate, entry) => {
-                    if (entry['Vanaf datum'] < firstDate || firstDate === false) {
-                        return entry['Vanaf datum'];
-                    }
-                    return firstDate;
-                }, false);
+                return this.$store.getters.firstDate;
             },
 
             lastDate () {
-                return this.$store.state.entries.reduce((lastDate, entry) => {
-                    if (entry['Vanaf datum'] > lastDate || lastDate === false) {
-                        return entry['Vanaf datum'];
-                    }
-                    return lastDate;
-                }, false);
+                return this.$store.getters.lastDate;
             },
 
             days () {

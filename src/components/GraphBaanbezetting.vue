@@ -2,6 +2,7 @@
     import { Line } from 'vue-chartjs'
     import parseISO from 'date-fns/parseISO'
     import format from 'date-fns/format'
+    import {dateFns} from "../utils/dateHelper";
 
     export default {
         extends: Line,
@@ -37,23 +38,38 @@
                     ]
                 }
 
-                // https://medium.com/poka-techblog/simplify-your-javascript-use-map-reduce-and-filter-bd02c593cc2d
-                // accumulate reservations per day
-                let resPerDay = this.$store.state.entries.reduce((acc, entry) => {
-                    // acc.hasOwnProperty() replaced by below, see https://eslint.org/docs/rules/no-prototype-builtins
-                    if (!Object.prototype.hasOwnProperty.call(acc, entry['Vanaf datum'])) {
-                        acc[entry['Vanaf datum']] = [];
-                    }
-                    acc[entry['Vanaf datum']].push(entry);
+                // array of date-Objects
+                let dateTimesArray = dateFns.daysWithTimeInterval(this.$store.getters.firstDate, this.$store.getters.lastDate, '08:00', '23:00', 15);
+
+                // make the labels
+                let labels = dateTimesArray.map(date => dateFns.dateFormat(date, 'eeeeee dd-MM-yyyy kk:mo'));
+
+                chartData.labels = labels;
+
+                // make the initial dataObject to collect all information
+                let initialDataObject = labels.reduce((acc, label) => {
+                    acc[label] = [];
                     return acc;
                 }, {});
 
 
+                // fill the dataObject
+                // https://medium.com/poka-techblog/simplify-your-javascript-use-map-reduce-and-filter-bd02c593cc2d
+                let dataObject = this.$store.state.entries.reduce((acc, entry) => {
+                    let key = dateFns.dateFormat(entry.startDate, 'eeeeee dd-MM-yyyy kk:mo');
+                    if (!Object.prototype.hasOwnProperty.call(acc, key)) {
+                        return acc; // do nothing for now
+                    }
+                    acc[key].push(entry);
+                    return acc;
+                }, initialDataObject);
+
+
                 // https://gomakethings.com/the-es6-way-to-loop-through-objects-with-vanilla-javascript/
                 // add the accumulated results to the chartData-set
-                Object.keys(resPerDay).forEach(function (key) {
-                    chartData.labels.push(format(parseISO(key), 'eeeeee d MMM yyyy'));
-                    chartData.datasets[0].data.push(resPerDay[key].length);
+                Object.keys(dataObject).forEach(function (dateLabel) {
+                    // chartData.labels.push(format(parseISO(dateLabel), 'eeeeee d MMM yyyy'));
+                    chartData.datasets[0].data.push(dataObject[dateLabel].length);
                 });
                 return chartData;
 
