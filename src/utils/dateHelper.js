@@ -146,6 +146,16 @@ function dateTimesFromStartTimeToEndTime (dateOrYmd, startTime, endTime, interva
     return result;
 }
 
+// for the x-axis
+function daysWithTimeInterval(startDateOrYmd, endDateOrYmd, startTime, endTime, intervalInMinutes)
+{
+    let result = [];
+    datesFromStartToEnd(startDateOrYmd, endDateOrYmd).forEach(date => {
+       dateTimesFromStartTimeToEndTime(date, startTime, endTime, intervalInMinutes).forEach(dateTime => result.push(dateTime));
+    });
+    return result;
+}
+
 
 function isValidDateObject(object) {
     // https://stackoverflow.com/questions/643782/how-to-check-whether-an-object-is-a-date
@@ -219,6 +229,8 @@ const dateFns = {
     datesFromStartToEnd: datesFromStartToEnd,
 
     dateTimesFromStartTimeToEndTime: dateTimesFromStartTimeToEndTime,
+
+    daysWithTimeInterval: daysWithTimeInterval,
 
     getStartEndOfWeekYmd: getStartEndOfWeekYmd,
 
