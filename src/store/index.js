@@ -22,7 +22,8 @@ export default new Vuex.Store({
     fileName: null,
     fileFields: [], // all fields from the import-file (array of field-names)
     fileData: [],   // all datasets (arrays) matching above fields
-    entries: []     // a dataset converted to an entry-object
+    entries: [],     // a dataset converted to an entry-object
+    entryObject: {}
   },
 
   getters: {
@@ -74,6 +75,9 @@ export default new Vuex.Store({
       let fileData = [];
       let fields = []
       let entries = [];
+      let entryObject = {};
+      let entry = null;
+      let entryKey = null;
       let lines = fileReader.result.split('\n');
       for (let nr = 0; nr < lines.length; nr++) {
         let line = lines[nr].trim().replace(',,', ',"",');  // replace empty values (,,), by ,"",
@@ -83,7 +87,14 @@ export default new Vuex.Store({
           continue;
         }
         fileData.push(data);
-        entries.push(new Entry(data, fields));
+        entry = new Entry(data, fields);
+        entryKey = entry.getObjectKey();
+        if (!Object.prototype.hasOwnProperty.call(entryObject, entryKey)) {
+          entryObject[entryKey] = entry;
+          entries.push(entry);
+        } else {
+          entryObject[entryKey].addOpponent(entry);
+        }
       }
       state.fileName = fileReader.name;
       state.fileFields = fields;

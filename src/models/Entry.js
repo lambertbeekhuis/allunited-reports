@@ -16,6 +16,8 @@ export class Entry {
         let intervalObject = intervalToDuration({start: this.startDate, end: this.endDate});
         this.duration = intervalObject.hours * 60 + intervalObject.minutes;
 
+        this.opponents = []
+
 
         /*
         {
@@ -33,6 +35,15 @@ export class Entry {
 
     getCourt() {
         return this['Locatiecode'];
+    }
+
+    addOpponent(entry) {
+        this.opponents.push(entry);
+    }
+
+    // to filter double entries on the same court (=opponents)
+    getObjectKey () {
+        return this.startTime + '_' + this['Locatiecode'];
     }
 
 

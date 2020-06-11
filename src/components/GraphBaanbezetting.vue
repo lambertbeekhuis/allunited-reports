@@ -73,7 +73,7 @@
                         acc[key].push(entry);
                         key = key + (15 * 60000);
                     }
-                    while (key <= endKey);
+                    while (key < endKey);
                     return acc;
                 }, initialDataObject);
 
