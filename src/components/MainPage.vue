@@ -69,17 +69,18 @@ Reports voor AllUnited baanbezetting
 
         methods: {
             importFile() {
-
                 if (!this.chosenFile) {
                     this.data = "No File Chosen"
+                    return;
                 }
-                var reader = new FileReader();
+                let fileReader = new FileReader();
+                fileReader.name = this.chosenFile.name; // inject the filename, so I can retrieve it again from File
 
                 // Use the javascript reader object to load the contents
                 // of the file in the v-model prop
-                reader.readAsText(this.chosenFile);
-                reader.onload = () => {
-                    this.$store.commit('SET_INPUT_DATA', reader.result);
+                fileReader.readAsText(this.chosenFile);
+                fileReader.onload = () => {
+                    this.$store.commit('SET_INPUT_DATA', fileReader);
                 }
             }
         }
