@@ -42,7 +42,10 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars-default": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+      "no-unused-vars": ["error", { "vars": "none", "args": "none", "ignoreRestSiblings": true }]
+    }
   },
   "browserslist": [
     "> 1%",
