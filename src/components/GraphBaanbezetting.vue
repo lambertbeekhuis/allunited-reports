@@ -22,7 +22,8 @@
             },
 
             entries () {
-                return this.$store.state.entries;
+                return this.$store.getters.getEntriesStartEnd('2020-06-03', '2020-06-04');
+                // return this.$store.state.entries;
             },
 
             chartData () {
@@ -39,7 +40,8 @@
                 }
 
                 // array of date-Objects
-                let dateTimesArray = dateFns.daysWithTimeInterval(this.$store.getters.firstDate, this.$store.getters.lastDate, '08:00', '23:00', 15);
+                let dateTimesArray = dateFns.daysWithTimeInterval('2020-06-03','2020-06-04', '08:00', '23:00', 15);
+                //let dateTimesArray = dateFns.daysWithTimeInterval(this.$store.getters.firstDate, this.$store.getters.lastDate, '08:00', '23:00', 15);
 
                 // make the labels
                 let labels = dateTimesArray.map(date => dateFns.dateFormat(date, 'eeeeee dd-MM-yyyy kk:mo'));
@@ -55,7 +57,7 @@
 
                 // fill the dataObject with the data from the entries
                 // https://medium.com/poka-techblog/simplify-your-javascript-use-map-reduce-and-filter-bd02c593cc2d
-                let dataObject = this.$store.state.entries.reduce((acc, entry) => {
+                let dataObject = this.entries.reduce((acc, entry) => {
                     let key = entry.startDate.getTime();
                     let endKey = entry.endDate.getTime();
                     // let key = dateFns.dateFormat(entry.startDate, 'eeeeee dd-MM-yyyy kk:mo');

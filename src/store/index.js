@@ -2,19 +2,32 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import { Entry } from './../models/Entry';
+import {dateFns} from "../utils/dateHelper";
+
 
 Vue.use(Vuex)
+
+// filter the entries between specific dates
+function getEntriesStartEnd (state, startYmd, endYmd) {
+  console.log('start and end', startYmd, endYmd);
+  let startTime = dateFns.timeStartOfDay(startYmd); // in unix timestamp
+  let endTime = dateFns.timeEndOfDay(endYmd);
+  console.log('startTime and endTime', startTime, endTime);
+  return state.entries.filter(entry => (entry.startTime >= startTime && entry.startTime <= endTime) );
+}
+
 
 export default new Vuex.Store({
   state: {
     fileName: null,
-    fileFields: [], // all fields (array)
+    fileFields: [], // all fields from the import-file (array of field-names)
     fileData: [],   // all datasets (arrays) matching above fields
     entries: []     // a dataset converted to an entry-object
   },
 
   getters: {
 
+    // return the first date (Ymd) from the import-file, or false
     firstDate: state => {
       return state.entries.reduce((firstDate, entry) => {
         if (entry['Vanaf datum'] < firstDate || firstDate === false) {
@@ -24,6 +37,7 @@ export default new Vuex.Store({
       }, false);
     },
 
+    // return the last date (Ymd) from the import-file, or false
     lastDate: state => {
       return state.entries.reduce((lastDate, entry) => {
         if (entry['Vanaf datum'] > lastDate || lastDate === false) {
@@ -32,6 +46,9 @@ export default new Vuex.Store({
         return lastDate;
       }, false);
     },
+
+    // get all entries that start within the given period
+    getEntriesStartEnd: (state) => (startYmd, endYmd) => getEntriesStartEnd(state, startYmd, endYmd),
 
   },
 

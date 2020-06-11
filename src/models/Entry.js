@@ -6,8 +6,12 @@ export class Entry {
             this[field] = data[index];
         });
 
+
+        // should actually be startTime and endTime
         this.startDate = parseISO(this['Vanaf datum'] + 'T' + this['Tijd vanaf']);
+        this.startTime = this.startDate.getTime();
         this.endDate = parseISO(this['Vanaf datum'] + 'T' + this['Tijd t/m']);
+        this.endTime = this.endDate.getTime();
 
         let intervalObject = intervalToDuration({start: this.startDate, end: this.endDate});
         this.duration = intervalObject.hours * 60 + intervalObject.minutes;
