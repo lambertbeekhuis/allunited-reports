@@ -8,6 +8,10 @@
         extends: Line,
         name: "GraphBaanbezetting",
 
+        props: {
+            range: Object
+        },
+
         data: () => ({
             options: {},
         }),

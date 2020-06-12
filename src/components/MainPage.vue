@@ -36,10 +36,17 @@ Rapportage voor AllUnited baanbezetting
             </v-col>
             <v-col class="mb-4" cols="3">
 
+                <vc-date-picker
+                        mode="range"
+                        v-model="range"
+                        color="blue"
+                        is-inline
+                />
+
             </v-col>
 
             <v-col class="mb-4" cols="6">
-                <graph-baanbezetting v-if="firstDate"></graph-baanbezetting>
+                <graph-baanbezetting v-if="firstDate" :range="range"></graph-baanbezetting>
             </v-col>
 
         </v-row>
@@ -57,6 +64,10 @@ Rapportage voor AllUnited baanbezetting
         },
         data: () => ({
             chosenFile: null,
+            range: {
+                start: new Date(2018, 0, 16), // Jan 16th, 2018
+                end: new Date(2018, 0, 19)    // Jan 19th, 2018
+            }
         }),
 
         computed: {
