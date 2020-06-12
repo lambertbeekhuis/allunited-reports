@@ -8,7 +8,7 @@
         extends: Line,
         name: "GraphBaanbezetting",
 
-        // range is object with start and end-properties containing a Date-object
+        // range is object with start- and end-properties containing a Date-object
         props: {
             range: Object
         },
@@ -24,7 +24,7 @@
 
 
             entries () {
-                return this.$store.getters.getEntriesStartEnd('2020-06-03', '2020-06-04');
+                return this.$store.getters.getEntriesStartEnd(this.range.start, this.range.end);
                 // return this.$store.state.entries;
             },
 
@@ -41,8 +41,8 @@
                     ]
                 }
 
-                // array of date-Objects
-                let dateTimesArray = dateFns.daysWithTimeInterval('2020-06-03','2020-06-04', '08:00', '23:00', 15);
+                // array of date-Objects for the x-axis
+                let dateTimesArray = dateFns.daysWithTimeInterval(this.range.start, this.range.end, '08:00', '23:00', 15);
                 //let dateTimesArray = dateFns.daysWithTimeInterval(this.$store.getters.firstDate, this.$store.getters.lastDate, '08:00', '23:00', 15);
 
                 // make the labels
