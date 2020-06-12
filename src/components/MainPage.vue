@@ -65,13 +65,19 @@ Rapportage voor AllUnited baanbezetting
         },
         data: () => ({
             chosenFile: null,
-            range: {
-                start: new Date(2020, 5, 1), // Jan 16th, 2018
-                end: new Date(2020, 5, 4)    // Jan 19th, 2018
-            }
         }),
 
         computed: {
+
+            range: {
+                get () {
+                    return this.$store.state.range;
+                },
+                set (range) {
+                    this.$store.commit('SET_RANGE', range);
+                }
+            },
+
             fileFields () {
                 return this.$store.state.fileFields;
             },

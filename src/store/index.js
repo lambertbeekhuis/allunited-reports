@@ -41,15 +41,16 @@ export default new Vuex.Store({
     fileLineCount: 0,
     fileFields: [], // all fields from the import-file (array of field-names)
     entries: [],     // a dataset converted to an entry-object
-    entryObject: {}
+    entryObject: {},
+    range: {start: new Date(), end: new Date()} // the selected range of the calendar
   },
 
   getters: {
 
-    // return the first date (Ymd) from the import-file, or false
+    // return the first date (Ymd-format) from the import-file, or false
     firstDate: state => firstDate(state),
 
-    // return the last date (Ymd) from the import-file, or false
+    // return the last date (Ymd-format) from the import-file, or false
     lastDate: state => lastDate(state),
 
     // return an array of Dates from firstDate to lastDate
@@ -112,6 +113,11 @@ export default new Vuex.Store({
       state.fileFields = fields;
       state.fileLineCount = lines.length - 1;
       state.entries = entries;
+      state.range = { start: dateFns.dateFromYmd(firstDate(state)), end: dateFns.dateFromYmd(lastDate(state)) }
+    },
+
+    SET_RANGE (state, range) {
+      state.range = range;
     }
   },
 

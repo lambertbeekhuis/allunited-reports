@@ -8,6 +8,7 @@
         extends: Line,
         name: "GraphBaanbezetting",
 
+        // range is object with start and end-properties containing a Date-object
         props: {
             range: Object
         },
