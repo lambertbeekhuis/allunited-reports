@@ -41,6 +41,7 @@ Rapportage voor AllUnited baanbezetting
                         v-model="range"
                         color="blue"
                         is-inline
+                        :attributes="attributesCalendar"
                 />
 
             </v-col>
@@ -65,8 +66,8 @@ Rapportage voor AllUnited baanbezetting
         data: () => ({
             chosenFile: null,
             range: {
-                start: new Date(2018, 0, 16), // Jan 16th, 2018
-                end: new Date(2018, 0, 19)    // Jan 19th, 2018
+                start: new Date(2020, 5, 1), // Jan 16th, 2018
+                end: new Date(2020, 5, 4)    // Jan 19th, 2018
             }
         }),
 
@@ -86,6 +87,17 @@ Rapportage voor AllUnited baanbezetting
             lastDate () {
                 return this.$store.getters.lastDate;
             },
+
+            attributesCalendar () {
+                return [
+                    {
+                        dot: {
+                            color: 'blue'
+                        },
+                        dates: this.$store.getters.fileDatesArray
+                    }
+                ]
+            }
 
         },
 

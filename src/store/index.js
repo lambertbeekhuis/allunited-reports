@@ -16,6 +16,24 @@ function getEntriesStartEnd (state, startYmd, endYmd) {
   return state.entries.filter(entry => (entry.startTime >= startTime && entry.startTime <= endTime) );
 }
 
+function firstDate (state) {
+  return state.entries.reduce((firstDate, entry) => {
+    if (entry['Vanaf datum'] < firstDate || firstDate === false) {
+      return entry['Vanaf datum'];
+    }
+    return firstDate;
+  }, false);
+}
+
+function lastDate (state) {
+  return state.entries.reduce((lastDate, entry) => {
+    if (entry['Vanaf datum'] > lastDate || lastDate === false) {
+      return entry['Vanaf datum'];
+    }
+    return lastDate;
+  }, false);
+}
+
 
 export default new Vuex.Store({
   state: {
@@ -29,23 +47,17 @@ export default new Vuex.Store({
   getters: {
 
     // return the first date (Ymd) from the import-file, or false
-    firstDate: state => {
-      return state.entries.reduce((firstDate, entry) => {
-        if (entry['Vanaf datum'] < firstDate || firstDate === false) {
-          return entry['Vanaf datum'];
-        }
-        return firstDate;
-      }, false);
-    },
+    firstDate: state => firstDate(state),
 
     // return the last date (Ymd) from the import-file, or false
-    lastDate: state => {
-      return state.entries.reduce((lastDate, entry) => {
-        if (entry['Vanaf datum'] > lastDate || lastDate === false) {
-          return entry['Vanaf datum'];
-        }
-        return lastDate;
-      }, false);
+    lastDate: state => lastDate(state),
+
+    // return an array of Dates from firstDate to lastDate
+    fileDatesArray: state => {
+      if (state.entries.length === 0 ) {
+        return [];
+      }
+      return dateFns.datesFromStartToEnd(firstDate(state), lastDate(state));
     },
 
     // get all entries that start within the given period
