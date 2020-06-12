@@ -17,9 +17,6 @@
                 return this.$store.state.fileFields;
             },
 
-            fileData () {
-                return this.$store.state.fileData;
-            },
 
             entries () {
                 return this.$store.getters.getEntriesStartEnd('2020-06-03', '2020-06-04');
@@ -142,7 +139,7 @@
         },
 
         watch: {
-            fileData () {
+            entries () {
                 //this.$data._chart.update();
                 this.renderChart(this.chartData, this.options);
             }

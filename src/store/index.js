@@ -20,8 +20,8 @@ function getEntriesStartEnd (state, startYmd, endYmd) {
 export default new Vuex.Store({
   state: {
     fileName: null,
+    fileLineCount: 0,
     fileFields: [], // all fields from the import-file (array of field-names)
-    fileData: [],   // all datasets (arrays) matching above fields
     entries: [],     // a dataset converted to an entry-object
     entryObject: {}
   },
@@ -72,7 +72,7 @@ export default new Vuex.Store({
       }
 
       // Decode inputfile-data, split by lines first
-      let fileData = [];
+
       let fields = []
       let entries = [];
       let entryObject = {};
@@ -86,7 +86,7 @@ export default new Vuex.Store({
           fields = data;
           continue;
         }
-        fileData.push(data);
+
         entry = new Entry(data, fields);
         entryKey = entry.getObjectKey();
         if (!Object.prototype.hasOwnProperty.call(entryObject, entryKey)) {
@@ -98,7 +98,7 @@ export default new Vuex.Store({
       }
       state.fileName = fileReader.name;
       state.fileFields = fields;
-      state.fileData = fileData;
+      state.fileLineCount = lines.length - 1;
       state.entries = entries;
     }
   },

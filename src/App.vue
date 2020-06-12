@@ -6,7 +6,7 @@
       dark
     >
       <div class="d-flex align-center">
-        AllUnited Reports
+        AllUnited Rapportage-tool
       </div>
 
       <v-spacer></v-spacer>
@@ -16,7 +16,7 @@
         target="_blank"
         text
       >
-        <span class="mr-2">By Jovisst</span>
+        <span class="mr-2">Door Lambert Beekhuis</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>

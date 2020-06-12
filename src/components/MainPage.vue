@@ -2,9 +2,11 @@
     <v-container>
         <v-row class="text-center">
             <v-col class="mb-4">
+                <!--
                 <h1 class="display-2 font-weight-bold mb-3">
-Reports voor AllUnited baanbezetting
+Rapportage voor AllUnited baanbezetting
                 </h1>
+                -->
 
                 <v-btn>1. Upload file</v-btn>
 
@@ -25,29 +27,19 @@ Reports voor AllUnited baanbezetting
                 </v-file-input>
                 <v-btn right @click="importFile">Import</v-btn>
 
-                <h3>Elements {{fileData.length}}</h3>
-                <div>
-                    <span v-for="(field, indexF) in fileFields" :key="'F' + indexF">{{field}}, </span>
-                </div>
-                <div v-for="(line, indexL) in fileData" :key="indexL">
-                    <span v-for="(element, indexE) in line" :key="'E' + indexE" class="ms-3">{{element}}</span>
-                </div>
+                <div>Aantal regels: {{fileLineCount}}</div>
+                <div>Eerste dag: {{firstDate}}</div>
+                <div>Laatste dag: {{lastDate}}</div>
+
+
+
             </v-col>
             <v-col class="mb-4" cols="3">
-                <div>firstDate: {{firstDate}}</div>
-                <div>lastDate: {{lastDate}}</div>
-                <div>-- datetimes -- </div>
-                <div v-for="(dateTime, index) in dateTimes" :key="'DT' + index">{{dateTime}}</div>
-
-                <div>-- times -- </div>
-                <div v-for="(time, index) in times" :key="'T' + index">{{time}}</div>
-                <div>-- days -- </div>
-                <div v-for="(day, index) in days" :key="'D' + index">{{day}}</div>
 
             </v-col>
 
             <v-col class="mb-4" cols="6">
-                <graph-baanbezetting v-if="fileData.length"></graph-baanbezetting>
+                <graph-baanbezetting v-if="firstDate"></graph-baanbezetting>
             </v-col>
 
         </v-row>
@@ -72,8 +64,8 @@ Reports voor AllUnited baanbezetting
                 return this.$store.state.fileFields;
             },
 
-            fileData () {
-                return this.$store.state.fileData;
+            fileLineCount () {
+                return this.$store.state.fileLineCount;
             },
 
             firstDate () {
@@ -83,30 +75,6 @@ Reports voor AllUnited baanbezetting
             lastDate () {
                 return this.$store.getters.lastDate;
             },
-
-            days () {
-                if (this.firstDate) {
-                    return dateFns.datesFromStartToEnd(this.firstDate, this.lastDate);
-                } else {
-                    return []
-                }
-            },
-
-            times () {
-                if (this.firstDate) {
-                    return dateFns.dateTimesFromStartTimeToEndTime(this.firstDate, '10:00', '11:00', 15);
-                } else {
-                    return []
-                }
-            },
-
-            dateTimes () {
-                if (this.firstDate) {
-                    return dateFns.daysWithTimeInterval(this.firstDate, this.lastDate, '10:00', '11:00', 15);
-                } else {
-                    return []
-                }
-            }
 
         },
 
