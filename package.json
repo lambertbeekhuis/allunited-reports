@@ -11,6 +11,7 @@
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "date-fns": "^2.14.0",
+    "v-calendar": "1.0.6",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.0",
     "vuetify": "^2.2.11",
