@@ -35,6 +35,7 @@ Rapportage voor AllUnited baanbezetting
 
             </v-col>
             <v-col class="mb-4" cols="3">
+                <div v-if="firstDate">
 
                 <vc-date-picker
                         mode="range"
@@ -43,6 +44,7 @@ Rapportage voor AllUnited baanbezetting
                         is-inline
                         :attributes="attributesCalendar"
                 />
+                </div>
 
             </v-col>
 
