@@ -1,19 +1,26 @@
 <template>
     <v-container>
+
         <v-row class="text-center">
             <v-col class="mb-4">
-                <!--
-                <h1 class="display-2 font-weight-bold mb-3">
-Rapportage voor AllUnited baanbezetting
-                </h1>
-                -->
+                <v-tabs
+                    v-model="tab"
+                    color="blue"
+                    grow
+                >
+                    <v-tab
+                        v-for="item in tabItems"
+                        :key="item.label"
+                    >
+                        {{ item.label }}
+                    </v-tab>
+                </v-tabs>
+            </v-col>
+        </v-row>
 
-                <v-btn>1. Upload file</v-btn>
-
-                <v-btn>2. Kies report</v-btn>
-
-                <v-btn>3. Kies period</v-btn>
-
+        <v-row class="text-center">
+            <v-col class="mb-4">
+                <component v-bind:is="tabItems[tab].component"></component>
             </v-col>
         </v-row>
 
@@ -59,14 +66,26 @@ Rapportage voor AllUnited baanbezetting
 <script>
     import GraphBaanbezetting from "./GraphBaanbezetting";
     import {dateFns} from "../utils/dateHelper";
+    import FileUpload from "./FileUpload";
+    import Thanks from "./Thanks";
+    import Rapportage from "./Rapportage";
 
     export default {
         name: "MainPage",
         components: {
+            Rapportage,
+            Thanks,
+            FileUpload,
             GraphBaanbezetting
         },
         data: () => ({
             chosenFile: null,
+            tab: 0,  // the choosen tab
+            tabItems: [
+                {label: 'File upload', component: 'FileUpload'},
+                {label: 'Rapportage', component: 'Rapportage'},
+                {label: 'Thanks', component: 'Thanks'}
+            ],
         }),
 
         computed: {
