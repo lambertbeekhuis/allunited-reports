@@ -18,7 +18,7 @@
             </v-col>
         </v-row>
 
-        <v-row class="text-center">
+        <v-row class="">
             <v-col class="mb-4">
                 <component v-bind:is="tabItems[tab].component"></component>
             </v-col>
