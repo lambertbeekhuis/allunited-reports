@@ -16,7 +16,14 @@
         </v-col>
 
         <v-col class="mb-4" cols="9">
-        plaatje
+            <h3>Hoe maak ik het juiste export-bestand vanuit AllUnited?</h3>
+            <div>Definieer een export-wizard zoals onderstaand en exporteer met Komma/"waarde"</div>
+
+            <v-img src="./../assets/selectie-wizard2.jpg"></v-img>
+
+            <div>Exporteer vervolgens met Komma/"waarde"</div>
+
+            <v-img src="./../assets/Selectie-wizard-export.jpg"></v-img>
         </v-col>
 
     </v-row>
