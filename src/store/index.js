@@ -68,6 +68,10 @@ export default new Vuex.Store({
 
   mutations: {
 
+    SET_INPUT_DATA_DEMO (state) {
+      localStorage.setItem('allunited-reports', JSON.stringify({name: 'demo', result: ''}));
+    },
+
     // used at new file-input or a app initialization
     SET_INPUT_DATA (state, fileReader) {
 

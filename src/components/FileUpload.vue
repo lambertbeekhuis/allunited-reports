@@ -9,6 +9,8 @@
             </v-file-input>
             <v-btn right @click="importFile">Import</v-btn>
 
+            <v-btn right @click="importDemoFile">Demo</v-btn>
+
             <div>Aantal regels: {{fileLineCount}}</div>
             <div>Eerste dag: {{firstDate}}</div>
             <div>Laatste dag: {{lastDate}}</div>
@@ -70,6 +72,13 @@
                 fileReader.onload = () => {
                     this.$store.commit('SET_INPUT_DATA', fileReader);
                 }
+            },
+
+
+            // https://medium.com/@sampath.katari/read-file-as-data-url-using-filereader-javascript-f84b1662c58c
+            importDemoFile() {
+                this.$store.commit('SET_INPUT_DATA_DEMO');
+                this.$store.commit('SET_INPUT_DATA', false);
             }
         }
 
