@@ -1,8 +1,7 @@
 <template>
-    <v-row>
+    <v-row v-if="firstDate">
         <v-col class="mb-4" cols="3">
-            <div v-if="firstDate">
-
+            <div>
                 <vc-date-picker
                         mode="range"
                         v-model="range"
@@ -11,13 +10,14 @@
                         :attributes="attributesCalendar"
                 />
             </div>
-
         </v-col>
 
         <v-col class="mb-4" cols="9">
-            <graph-baanbezetting v-if="firstDate" :range="range"></graph-baanbezetting>
+            <graph-baanbezetting :range="range"></graph-baanbezetting>
         </v-col>
-
+    </v-row>
+    <v-row v-else>
+        Upload eerst een data-file, of gebruik de demo-data
     </v-row>
 </template>
 
