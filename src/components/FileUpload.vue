@@ -4,12 +4,12 @@
             <v-file-input
                     accept=".csv"
                     v-model="chosenFile"
-                    label="AllUnited report file"
+                    label="Add AllUnited report-file"
             >
             </v-file-input>
-            <v-btn right @click="importFile">Import</v-btn>
+            <v-btn right @click="importFile" v-bind="{disabled: !chosenFile}">Import</v-btn>
 
-            <v-btn right @click="importDemoFile">Demo</v-btn>
+            <v-btn right @click="importDemoFile">Use demo data</v-btn>
 
             <div>Aantal regels: {{fileLineCount}}</div>
             <div>Eerste dag: {{firstDate}}</div>
@@ -74,11 +74,11 @@
                 }
             },
 
-
-            // https://medium.com/@sampath.katari/read-file-as-data-url-using-filereader-javascript-f84b1662c58c
+            // https://vuejs.org/v2/cookbook/using-axios-to-consume-apis.html
             importDemoFile() {
-                this.$store.commit('SET_INPUT_DATA_DEMO');
-                this.$store.commit('SET_INPUT_DATA', false);
+                this.$store.dispatch('loadDemoData')
+                    .then(response => {});
+
             }
         }
 

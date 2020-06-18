@@ -69,33 +69,43 @@ export default new Vuex.Store({
   mutations: {
 
     SET_INPUT_DATA_DEMO (state) {
-      localStorage.setItem('allunited-reports', JSON.stringify({name: 'demo', result: ''}));
+
+      // localStorage.setItem('allunited-reports', JSON.stringify({name: 'demo', result: ''}));
     },
 
     // used at new file-input or a app initialization
     SET_INPUT_DATA (state, fileReader) {
-
+      let lines = [];
+      let text = null;
       if (fileReader === false) {
         let storage = localStorage.getItem('allunited-reports');
         if (storage) {
           // read file-input from storage
           fileReader = JSON.parse(storage);
+          lines = fileReader.result.split('\n');
         } else {
           return; // no storage found, do nothing
         }
       } else {
-        // handle in normal input file, store file for usage a refresh
-        localStorage.setItem('allunited-reports', JSON.stringify({name: fileReader.name, result: fileReader.result}));
+        // fileReader can be a fileReader object, or the textfile directly for demo-data
+        if (typeof fileReader === 'object') {
+          // fileReader object itself
+          text = fileReader.result;
+        } else {
+          text = fileReader;
+        }
+        // Decode inputfile-data, split by lines first
+        lines = text.split('\n');
+        localStorage.setItem('allunited-reports', JSON.stringify({name: fileReader.name, result: text}));
       }
 
-      // Decode inputfile-data, split by lines first
-
+      // lines is defined now!!
       let fields = []
       let entries = [];
       let entryObject = {};
       let entry = null;
       let entryKey = null;
-      let lines = fileReader.result.split('\n');
+
       for (let nr = 0; nr < lines.length; nr++) {
         let line = lines[nr].trim().replace(',,', ',"",');  // replace empty values (,,), by ,"",
         let data = JSON.parse('[' + line + ']')
@@ -126,6 +136,17 @@ export default new Vuex.Store({
   },
 
   actions: {
+    loadDemoData ({ commit }) {
+      return Vue.axios
+          .get('/demo_export_baanbezetting.csv')
+          .then (response => {
+            console.log(response.data);
+            commit('SET_INPUT_DATA', response.data);
+            return response.data;
+          });
+
+
+    }
   },
   modules: {
   }
