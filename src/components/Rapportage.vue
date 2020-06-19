@@ -1,7 +1,8 @@
 <template>
     <v-row v-if="firstDate">
         <v-col class="mb-4" cols="3">
-            <div>
+            <div class="py-2">Exportfile: {{fileName}}</div>
+            <div class="py-2">
                 <vc-date-picker
                         mode="range"
                         v-model="range"
@@ -10,6 +11,10 @@
                         :attributes="attributesCalendar"
                 />
             </div>
+            <v-alert type="info" dismissible dense>
+                Kies de grafiek-periode. <br/>De 1e klik is de start, de 2e klik is de einddatum.
+            </v-alert>
+
         </v-col>
 
         <v-col class="mb-4" cols="9">
@@ -42,6 +47,10 @@
                 set (range) {
                     this.$store.commit('SET_RANGE', range);
                 }
+            },
+
+            fileName () {
+              return this.$store.state.fileName;
             },
 
             fileFields () {

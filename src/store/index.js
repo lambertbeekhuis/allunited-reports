@@ -77,6 +77,7 @@ export default new Vuex.Store({
     SET_INPUT_DATA (state, fileReader) {
       let lines = [];
       let text = null;
+      let fileName = null;
       if (fileReader === false) {
         let storage = localStorage.getItem('allunited-reports');
         if (storage) {
@@ -91,12 +92,15 @@ export default new Vuex.Store({
         if (typeof fileReader === 'object') {
           // fileReader object itself
           text = fileReader.result;
+          fileName = fileReader.name;
         } else {
           text = fileReader;
+          fileName = 'Demo-data';
         }
         // Decode inputfile-data, split by lines first
         lines = text.split('\n');
-        localStorage.setItem('allunited-reports', JSON.stringify({name: fileReader.name, result: text}));
+        console.log('store localstorage', fileName);
+        localStorage.setItem('allunited-reports', JSON.stringify({name: fileName, result: text}));
       }
 
       // lines is defined now!!
@@ -123,7 +127,7 @@ export default new Vuex.Store({
           entryObject[entryKey].addOpponent(entry);
         }
       }
-      state.fileName = fileReader.name;
+      state.fileName = fileName;
       state.fileFields = fields;
       state.fileLineCount = lines.length - 1;
       state.entries = entries;

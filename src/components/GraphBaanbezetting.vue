@@ -36,6 +36,9 @@
                     datasets: [
                         {
                             label: "#banen gedurende de dag",
+                            backgroundColor: '#f87979',
+                            borderColor: '#f87979',
+                            fill: false,
                             data: [],
                         }
                     ]
