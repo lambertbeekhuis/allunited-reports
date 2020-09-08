@@ -45,6 +45,17 @@ function findAllCourts (entries) {
   }, {});
 }
 
+// returns an object with the courtName as key and value { name: courtName }
+function findAllCategories (entries) {
+  return entries.reduce((categories, entry) => {
+    if (!Object.prototype.hasOwnProperty.call(categories, entry['Locatiecode'])) {
+      let category = entry['Reserveringstype'];
+      categories[category] = {name: category, code: entry['Reserveringstypecode']};
+    }
+    return categories;
+  }, {});
+}
+
 
 export default new Vuex.Store({
   state: {
@@ -56,7 +67,9 @@ export default new Vuex.Store({
     entryObject: {}, // an object with ObjectKeys/entries
     courts: [],      // all courts as defined in the inputfile
     categories: [],  // all categories as defined in the inputfile
-    range: {start: new Date(), end: new Date()} // the range as selected by the calendar
+    // user-selected-input
+    range: {start: new Date(), end: new Date()}, // the range as selected by the calendar
+    categoriesSelected: [] // the categories to show
   },
 
   getters: {
@@ -154,13 +167,21 @@ export default new Vuex.Store({
       let courtsObject = findAllCourts(state.entries); // returns an object
       state.courts = Object.keys(courtsObject).sort(); // easy sorting for now
 
+      let categoryObject = findAllCategories(state.entries);
+      state.categories = Object.keys(categoryObject);
+      state.categoriesSelected = Object.keys(categoryObject);
 
     },
 
     // range as selected from Calendar
     SET_RANGE (state, range) {
       state.range = range;
+    },
+
+    SET_CATEGORIES_SELECTED (state, categoriesSelected) {
+      state.categoriesSelected = categoriesSelected;
     }
+
   },
 
   actions: {

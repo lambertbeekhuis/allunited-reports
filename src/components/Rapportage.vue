@@ -18,13 +18,16 @@
             <div class="py-2">LineCount: {{fileLineCount}}</div>
             <div class="py-2">FileFields: {{fileFields}}</div>
             <div class="py-2">Courts: {{courts}}</div>
+            <div class="py-2">Categories: {{categoriesSelected}}</div>
+
+            <v-checkbox v-for="category in categories" v-model="categoriesSelected" v-bind:key="category" v-bind:label="category" v-bind:value="category"></v-checkbox>
 
 
 
         </v-col>
 
         <v-col class="mb-4" cols="9">
-            <graph-baanbezetting :range="range"></graph-baanbezetting>
+            <graph-baanbezetting :range="range" :categories="categoriesSelected"></graph-baanbezetting>
         </v-col>
     </v-row>
     <v-row v-else>
@@ -55,6 +58,15 @@
                 }
             },
 
+            categoriesSelected: {
+                get () {
+                    return this.$store.state.categoriesSelected;
+                },
+                set (categoriesSelected) {
+                    this.$store.commit('SET_CATEGORIES_SELECTED', categoriesSelected);
+                }
+            },
+
             fileName () {
               return this.$store.state.fileName;
             },
@@ -73,6 +85,10 @@
 
             courts () {
                 return this.$store.state.courts;
+            },
+
+            categories () {
+                return this.$store.state.categories;
             },
 
             attributesCalendar () {
