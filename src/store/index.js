@@ -34,15 +34,29 @@ function lastDate (state) {
   }, false);
 }
 
+// returns an object with the courtName as key and value { name: courtName }
+function findAllCourts (entries) {
+  return entries.reduce((courts, entry) => {
+    if (!Object.prototype.hasOwnProperty.call(courts, entry['Locatiecode'])) {
+      let courtName = entry['Locatiecode'];
+      courts[courtName] = {name: courtName};
+    }
+    return courts;
+  }, {});
+}
+
 
 export default new Vuex.Store({
   state: {
     fileName: null,
     fileLineCount: 0,
     fileFields: [], // all fields from the import-file (array of field-names)
-    entries: [],     // a dataset converted to an entry-object
-    entryObject: {},
-    range: {start: new Date(), end: new Date()} // the selected range of the calendar
+    fileRange: {start: null, end: null}, // the (Date-)range of the (input)file
+    entries: [],     // list of all Entries, ordered as from the inputfile
+    entryObject: {}, // an object with ObjectKeys/entries
+    courts: [],      // all courts as defined in the inputfile
+    categories: [],  // all categories as defined in the inputfile
+    range: {start: new Date(), end: new Date()} // the range as selected by the calendar
   },
 
   getters: {
@@ -124,6 +138,7 @@ export default new Vuex.Store({
           entryObject[entryKey] = entry;
           entries.push(entry);
         } else {
+          // ObjectKey exist, add it as opponent/tegenstander to the entry
           entryObject[entryKey].addOpponent(entry);
         }
       }
@@ -131,9 +146,18 @@ export default new Vuex.Store({
       state.fileFields = fields;
       state.fileLineCount = lines.length - 1;
       state.entries = entries;
-      state.range = { start: dateFns.dateFromYmd(firstDate(state)), end: dateFns.dateFromYmd(lastDate(state)) }
+      let start = firstDate(state);
+      let end   = lastDate(state);
+      state.range = { start: dateFns.dateFromYmd(start), end: dateFns.dateFromYmd(end) };
+      state.fileRange = { start: dateFns.dateFromYmd(start), end: dateFns.dateFromYmd(end) };
+
+      let courtsObject = findAllCourts(state.entries); // returns an object
+      state.courts = Object.keys(courtsObject).sort(); // easy sorting for now
+
+
     },
 
+    // range as selected from Calendar
     SET_RANGE (state, range) {
       state.range = range;
     }
@@ -148,8 +172,6 @@ export default new Vuex.Store({
             commit('SET_INPUT_DATA', response.data);
             return response.data;
           });
-
-
     }
   },
   modules: {

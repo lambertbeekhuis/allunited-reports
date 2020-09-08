@@ -9,15 +9,15 @@ export class Entry {
 
         // should actually be startTime and endTime
         this.startDate = parseISO(this['Vanaf datum'] + 'T' + this['Tijd vanaf']);
-        this.startTime = this.startDate.getTime();
+        this.startTime = this.startDate.getTime(); // unix-timestamp-number
         this.endDate = parseISO(this['Vanaf datum'] + 'T' + this['Tijd t/m']);
         this.endTime = this.endDate.getTime();
 
         let intervalObject = intervalToDuration({start: this.startDate, end: this.endDate});
         this.duration = intervalObject.hours * 60 + intervalObject.minutes;
 
+        // opponent/tegenstander: store additional players with same start/endtime + court
         this.opponents = []
-
 
         /*
         {
@@ -43,7 +43,7 @@ export class Entry {
 
     // to filter double entries on the same court (=opponents)
     getObjectKey () {
-        return this.startTime + '_' + this['Locatiecode'];
+        return this.startTime + '_' + this.endTime + '_' + this['Locatiecode'];
     }
 
 

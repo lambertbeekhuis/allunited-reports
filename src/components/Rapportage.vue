@@ -1,7 +1,7 @@
 <template>
-    <v-row v-if="firstDate">
+    <v-row v-if="fileRange.start">
         <v-col class="mb-4" cols="3">
-            <div class="py-2">Exportfile: {{fileName}}</div>
+
             <div class="py-2">
                 <vc-date-picker
                         mode="range"
@@ -14,6 +14,12 @@
             <v-alert type="info" dismissible dense>
                 Kies de grafiek-periode. <br/>De 1e klik is de start, de 2e klik is de einddatum.
             </v-alert>
+            <div class="py-2">Exportfile: {{fileName}}<br/>({{fileRange.start}} until {{fileRange.end}})</div>
+            <div class="py-2">LineCount: {{fileLineCount}}</div>
+            <div class="py-2">FileFields: {{fileFields}}</div>
+            <div class="py-2">Courts: {{courts}}</div>
+
+
 
         </v-col>
 
@@ -61,12 +67,12 @@
                 return this.$store.state.fileLineCount;
             },
 
-            firstDate () {
-                return this.$store.getters.firstDate;
+            fileRange () {
+                return this.$store.state.fileRange;
             },
 
-            lastDate () {
-                return this.$store.getters.lastDate;
+            courts () {
+                return this.$store.state.courts;
             },
 
             attributesCalendar () {
