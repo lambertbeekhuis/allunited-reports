@@ -25,7 +25,7 @@
 
 
             entries () {
-                return this.$store.getters.getEntriesStartEnd(this.range.start, this.range.end);
+                return this.$store.getters.getEntriesStartEnd(this.range.start, this.range.end, this.categories);
                 // return this.$store.state.entries;
             },
 

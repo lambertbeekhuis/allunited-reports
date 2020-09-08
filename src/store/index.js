@@ -8,12 +8,12 @@ import {dateFns} from "../utils/dateHelper";
 Vue.use(Vuex)
 
 // filter the entries between specific dates
-function getEntriesStartEnd (state, startYmd, endYmd) {
+function getEntriesStartEnd (entries, startYmd, endYmd, categories) {
   console.log('start and end', startYmd, endYmd);
   let startTime = dateFns.timeStartOfDay(startYmd); // in unix timestamp
   let endTime = dateFns.timeEndOfDay(endYmd);
   console.log('startTime and endTime', startTime, endTime);
-  return state.entries.filter(entry => (entry.startTime >= startTime && entry.startTime <= endTime) );
+  return entries.filter(entry => (entry.startTime >= startTime && entry.startTime <= endTime && categories.includes(entry['Reserveringstype'])));
 }
 
 function firstDate (state) {
@@ -89,7 +89,7 @@ export default new Vuex.Store({
     },
 
     // get all entries that start within the given period
-    getEntriesStartEnd: (state) => (startYmd, endYmd) => getEntriesStartEnd(state, startYmd, endYmd),
+    getEntriesStartEnd: (state) => (startYmd, endYmd, categories) => getEntriesStartEnd(state.entries, startYmd, endYmd, categories),
 
   },
 
