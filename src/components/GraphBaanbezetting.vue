@@ -15,7 +15,15 @@
         },
 
         data: () => ({
-            options: {},
+            options: {
+                scales: {
+                    xAxes: [{
+                    }],
+                    yAxes: [{
+                        stacked: true
+                    }]
+                }
+            }
         }),
 
         computed: {
@@ -24,26 +32,13 @@
             },
 
 
+            // there is a watcher on this on, so if input changes, then entries changes and graph is re-drawn
             entries () {
                 return this.$store.getters.getEntriesStartEnd(this.range.start, this.range.end, this.categories);
                 // return this.$store.state.entries;
             },
 
             chartData () {
-
-                // set initial/empty chartData
-                let chartData = {
-                    labels: [],
-                    datasets: [
-                        {
-                            label: "#banen gedurende de dag",
-                            backgroundColor: '#f87979',
-                            borderColor: '#f87979',
-                            fill: false,
-                            data: [],
-                        }
-                    ]
-                }
 
                 // array of date-Objects for the x-axis
                 let dateTimesArray = dateFns.daysWithTimeInterval(this.range.start, this.range.end, '08:00', '23:00', 15);
@@ -61,11 +56,7 @@
                     }
                 });
 
-                console.log('labels', labels);
-
-                chartData.labels = labels;
-
-                // make the initial dataObject to collect all information
+                // make the initial dataObject to collect all information. The keys are the unix-timestamps
                 let initialDataObject = dateTimesArray.reduce((acc, date) => {
                     acc[date.getTime()] = [];
                     return acc;
@@ -85,7 +76,7 @@
                     }
 
                     // push the entry until the endTime is reached
-                    // @todo: endTime is after the window to show
+                    // @todo: endTime is after the window to show??
                     do {
                         acc[key].push(entry);
                         key = key + (15 * 60000);
@@ -95,13 +86,37 @@
                 }, initialDataObject);
 
 
+                let datasetStack = []; // one single Stack
+
                 // https://gomakethings.com/the-es6-way-to-loop-through-objects-with-vanilla-javascript/
                 // add the accumulated results to the chartData-set
                 Object.keys(dataObject).forEach(function (dateLabel) {
-                    // chartData.labels.push(format(parseISO(dateLabel), 'eeeeee d MMM yyyy'));
-                    chartData.datasets[0].data.push(dataObject[dateLabel].length);
+                    datasetStack.push(dataObject[dateLabel].length);
                 });
+
+                let chartData = {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "#totaal",
+                            backgroundColor: '#f87979',
+                            borderColor: '#f87979',
+                            fill: false,
+                            data: datasetStack,
+                        },
+                        {
+                            label: "#totaal2",
+                            backgroundColor: '#88F909',
+                            borderColor: '#88F909',
+                            fill: false,
+                            data: datasetStack,
+                        }
+                    ]
+                }
                 return chartData;
+
+
+
 
                 /*
                 // https://medium.com/poka-techblog/simplify-your-javascript-use-map-reduce-and-filter-bd02c593cc2d
