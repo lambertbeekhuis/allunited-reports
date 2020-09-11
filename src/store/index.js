@@ -45,7 +45,7 @@ function findAllCourts (entries) {
   }, {});
 }
 
-// returns an object with the courtName as key and value { name: courtName }
+// returns an object with the courtName as key and value { name: category, code: categorycode }
 function findAllCategories (entries) {
   return entries.reduce((categories, entry) => {
     if (!Object.prototype.hasOwnProperty.call(categories, entry['Locatiecode'])) {

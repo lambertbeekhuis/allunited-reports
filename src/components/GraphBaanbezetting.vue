@@ -52,7 +52,7 @@
                 // make the labels
                 let labels = dateTimesArray.map(date => {
                     if (dateFns.dateFormat(date, 'kk') === '08') {
-                        return dateFns.dateFormat(date, 'eeeeee dd MMM yyyy');
+                        return dateFns.dateFormat(date, 'eeeeee dd MMM kk:mm');
                     }
                     if (dateFns.dateFormat(date, 'mm') === '00') {
                         return dateFns.dateFormat(date, 'kk:mm');
