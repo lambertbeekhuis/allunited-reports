@@ -4,6 +4,7 @@ import App from './App.vue'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import VCalendar from 'v-calendar';
+import router from './router'
 
 Vue.config.productionTip = false
 
@@ -14,8 +15,11 @@ Vue.use(VCalendar, {
 new Vue({
   store,
   vuetify,
+
   beforeCreate() {
     this.$store.commit('SET_INPUT_DATA', false);
   },
+
+  router,
   render: h => h(App)
 }).$mount('#app')

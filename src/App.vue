@@ -11,6 +11,12 @@
 
       <v-spacer></v-spacer>
 
+      <v-btn to="/about">
+      testing
+      </v-btn>
+
+      <v-spacer></v-spacer>
+
       <v-btn
         href="https://www.jovisst.nl"
         target="_blank"
@@ -22,20 +28,18 @@
     </v-app-bar>
 
     <v-content>
-      <main-page></main-page>
-
+          <router-view/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import MainPage from "./components/MainPage";
 
 export default {
   name: 'App',
 
   components: {
-    MainPage,
+
   },
 
   data: () => ({
