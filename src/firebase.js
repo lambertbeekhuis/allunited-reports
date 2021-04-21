@@ -9,7 +9,7 @@ import 'firebase/firestore'
 const firebaseConfig = {
     apiKey: "AIzaSyBt1Ii5_Pp6PHeIpwrJVMb8rKdfLntLlHA",
     authDomain: "allunited-reporting.firebaseapp.com",
-    databaseURL: '',
+    databaseURL: "allunited-reporting.firebaseio.com",
     projectId: "allunited-reporting",
     storageBucket: "allunited-reporting.appspot.com",
     messagingSenderId: "1012007979214",
@@ -19,20 +19,20 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 
 // utils
-// const db = firebase.firestore()
+const db = firebase.firestore()
 const auth = firebase.auth()
 
 // collection references
-//const usersCollection = db.collection('users')
+const usersCollection = db.collection('users')
 //const postsCollection = db.collection('posts')
 //const commentsCollection = db.collection('comments')
 //const likesCollection = db.collection('likes')
 
 // export utils/refs
 export {
-//    db,
+    db,
     auth,
-//    usersCollection,
+    usersCollection,
 //    postsCollection,
 //    commentsCollection,
 //    likesCollection
