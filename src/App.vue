@@ -22,14 +22,32 @@
         target="_blank"
         text
       >
-        <span class="mr-2">Door Lambert Beekhuis</span>
+        <span class="mr-2">Dank</span>
         <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
+
+      <v-spacer></v-spacer>
+
+      <v-btn v-if="loggedInUserName" @click="logout">
+        logout
+      </v-btn>
+
+      <v-btn v-if="loggedInUserName">
+        {{loggedInUserName}}
+      </v-btn>
+
+
+
+      <v-btn v-if="!loggedInUserName" :to="{name: 'route_login'}">
+        Login
+      </v-btn>
+
+
     </v-app-bar>
 
-    <v-content>
+    <v-main>
           <router-view/>
-    </v-content>
+    </v-main>
   </v-app>
 </template>
 
@@ -45,5 +63,18 @@ export default {
   data: () => ({
     //
   }),
+
+  computed: {
+    loggedInUserName: function () {
+      return this.$store.state.userProfile.name || false;
+    }
+  },
+
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+    }
+  }
+
 };
 </script>

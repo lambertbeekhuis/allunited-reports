@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+//import {auth, db} from '../firebase'
+import * as fb from '../firebase'
+import router from '../router'
 
 import { Entry } from './../models/Entry';
 import {dateFns} from "../utils/dateHelper";
@@ -59,6 +62,7 @@ function findAllCategories (entries) {
 
 export default new Vuex.Store({
   state: {
+    userProfile: {},
     fileName: null,
     fileLineCount: 0,
     fileFields: [], // all fields from the import-file (array of field-names)
@@ -94,6 +98,10 @@ export default new Vuex.Store({
   },
 
   mutations: {
+
+    SET_USER_PROFILE(state, val) {
+      state.userProfile = val
+    },
 
     SET_INPUT_DATA_DEMO (state) {
 
@@ -185,6 +193,48 @@ export default new Vuex.Store({
   },
 
   actions: {
+
+    async login({ dispatch }, form) {
+      // sign user in
+      const { user } = await fb.auth.signInWithEmailAndPassword(form.email, form.password)
+
+      // fetch user profile and set in state
+      dispatch('fetchUserProfile', user)
+    },
+
+    async logout({ commit }) {
+      await fb.auth.signOut();
+
+      // clear userProfile and redirect to /login
+      commit('SET_USER_PROFILE', {})
+      router.push('/')
+    },
+
+    async fetchUserProfile({ commit }, user) {
+      // fetch user profile
+      const userProfile = await fb.usersCollection.doc(user.uid).get()
+
+      // set user profile in state
+      commit('SET_USER_PROFILE', userProfile.data())
+
+      // change route to dashboard
+      router.push('/')
+    },
+
+    async signup({ dispatch }, form) {
+      // sign user up
+      const { user } = await fb.auth.createUserWithEmailAndPassword(form.email, form.password)
+
+      // create user profile object in userCollections
+      await fb.usersCollection.doc(user.uid).set({
+        name: form.name,
+        club: form.club
+      })
+
+      // fetch user profile and set in state
+      dispatch('fetchUserProfile', user)
+    },
+
     loadDemoData ({ commit }) {
       return Vue.axios
           .get('/demo_export_baanbezetting.csv')
